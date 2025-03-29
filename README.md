@@ -5,7 +5,7 @@ cd debug_smolagents_gradio
 ~~~
 
 ~~~
-docker build --force-rm=true -t agent-sandbox .
+docker build --force-rm=true -t debug-agent-sandbox .
 ~~~
 
 ~~~
