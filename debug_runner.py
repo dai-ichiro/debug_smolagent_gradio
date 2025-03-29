@@ -1,7 +1,7 @@
 from debug_sandbox import DockerSandbox
 
 # DockerSandboxのインスタンスを作成
-sandbox = DockerSandbox()
+sandbox = DockerSandbox(image_name=debug-agent-sandbox)
 
 agent_code = """
 import sys
