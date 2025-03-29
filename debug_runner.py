@@ -10,7 +10,7 @@ from smolagents import CodeAgent, OpenAIServerModel, GradioUI
 
 model = OpenAIServerModel(
     model_id="gemma-3-12b-it-4bit",
-    api_base="http://192.168.10.12:8080",
+    api_base="http://host.docker.internal:8080",
     api_key="EMPTY"
 )
 
