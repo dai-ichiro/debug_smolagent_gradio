@@ -10,14 +10,14 @@ from smolagents import CodeAgent, OpenAIServerModel, GradioUI
 
 model = OpenAIServerModel(
     model_id="gemma-3-12b-it-4bit",
-    api_base="http://192.168.11.18:8080",
+    api_base="http://192.168.10.12:8080",
     api_key="EMPTY"
 )
 
 agent = CodeAgent(
     model=model,
     tools=[],
-    additional_authorized_imports=["PIL", "PIL.Image", "os", "os.path", "pathlib", "pathlib.Path"]
+    additional_authorized_imports=[]
 )
 
 # エージェントの実行
