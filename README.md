@@ -9,6 +9,8 @@ docker build --force-rm=true -t debug-agent-sandbox .
 ~~~
 
 ~~~
-pip install docker
-python debug_runner.py
+uv venv
+source .venv/bin/activate
+uv pip install docker
+uv run debug_runner.py
 ~~~
