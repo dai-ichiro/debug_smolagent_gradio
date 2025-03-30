@@ -87,7 +87,7 @@ class DockerSandbox:
             try:
                 self.container.stop()
                 self.container.remove()
-                print("コンテナを停止しました")
+                print("Container stopped and removed successfully")
             except Exception as e:
                 print(f"エラー: {e}")
             finally:
