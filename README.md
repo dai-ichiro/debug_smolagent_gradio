@@ -12,5 +12,5 @@ docker build -t agent-sandbox .
 uv venv
 source .venv/bin/activate
 uv pip install docker
-uv run debug_runner.py
+uv run agent_runner.py
 ~~~
