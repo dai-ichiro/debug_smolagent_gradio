@@ -9,7 +9,7 @@ class DockerSandbox:
 
     def create_container(self):
         try:
-            # コンテナを作成（ポートマッピングを追加）
+            # コンテナを作成
             self.container = self.client.containers.run(
                 self.image_name,
                 command="tail -f /dev/null",  # コンテナを実行状態に保つ
@@ -43,17 +43,6 @@ class DockerSandbox:
             time.sleep(1)
             print(".", end="", flush=True)
             
-            # ログを確認
-            log_result = self.container.exec_run(
-                cmd=["bash", "-c", "cat /tmp/gradio.log 2>/dev/null || echo ''"]
-            )
-            log_output = self._safe_decode(log_result.output, errors='ignore').strip()
-            
-            # エラーの兆候を確認
-            if "Error" in log_output or "Exception" in log_output:
-                print("\n⚠️ エラーを検出しました:")
-                print(log_output[-500:] if len(log_output) > 500 else log_output)
-            
             # netstatを使用してポートのリスニング状態を確認
             netstat_result = self.container.exec_run(
                 cmd=["bash", "-c", "netstat -tulpn 2>/dev/null | grep 7860 || echo ''"]
@@ -65,15 +54,7 @@ class DockerSandbox:
                 print("📊 http://localhost:7860 でアクセスできます")
                 return None
         
-        # 起動失敗の場合にはログを表示
-        log_result = self.container.exec_run(
-            cmd=["bash", "-c", "cat /tmp/gradio.log 2>/dev/null || echo '(ログなし)'"]
-        )
-        log_output = self._safe_decode(log_result.output, errors='ignore')
-        
         print("\n❌ サーバー起動に失敗しました")
-        print("📋 ログ出力:")
-        print(log_output[-1000:] if len(log_output) > 1000 else log_output)
         return None
     
     def _safe_decode(self, data, encoding='utf-8', errors='strict'):
@@ -108,13 +89,7 @@ class DockerSandbox:
         port_result = self.container.exec_run(cmd=["bash", "-c", port_cmd])
         port_output = self._safe_decode(port_result.output).strip()
         
-        # ログ確認
-        log_cmd = "cat /tmp/gradio.log 2>/dev/null || echo 'ログがありません'"
-        log_result = self.container.exec_run(cmd=["bash", "-c", log_cmd])
-        log_output = self._safe_decode(log_result.output, errors='ignore').strip()
-        log_tail = log_output[-500:] if len(log_output) > 500 else log_output
-        
-        return f"プロセス状態:\n{ps_output}\n\nポート状態:\n{port_output}\n\nログ出力:\n{log_tail}"
+        return f"プロセス状態:\n{ps_output}\n\nポート状態:\n{port_output}"
         
     def exec_command(self, command):
         """コンテナ内でコマンドを実行"""
