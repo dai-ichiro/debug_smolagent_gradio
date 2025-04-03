@@ -1,14 +1,19 @@
 FROM python:3.12-bullseye
 
-# ビルド依存関係のインストール
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        build-essential \
-        python3-dev \
-	# ポートのリスニング状態を確認するため（Gradioを使う時）
-	net-tools && \
-    pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir 'smolagents[openai,gradio]' && \
+    build-essential curl gnupg net-tools
+    
+# Node.jsの公式リポジトリを追加
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g npm@latest && \
+    npm i -g @playwright/mcp@latest && \
+    npx playwright install chrome
+
+# Pythonパッケージのインストール
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir 'smolagents[openai,mcp,gradio]' && \
     # クリーンアップ
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
