@@ -1,11 +1,11 @@
 
 ~~~
-git clone https://github.com/dai-ichiro/debug_smolagents_gradio
+git clone https://github.com/dai-ichiro/debug_smolagents_gradio -b nodejs
 cd debug_smolagents_gradio
 ~~~
 
 ~~~
-docker build --force-rm=true -t debug-agent-sandbox .
+docker build -t agent-sandbox .
 ~~~
 
 ~~~
